@@ -7,6 +7,17 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         current: z.number(),
+        orderBy: z.object({
+          healthFactor: z.enum(["asc", "desc"]).optional(),
+          totalDebt: z.enum(["asc", "desc"]).optional(),
+          tonAmount: z.enum(["asc", "desc"]).optional(),
+          tsTonAmount: z.enum(["asc", "desc"]).optional(),
+          stTonAmount: z.enum(["asc", "desc"]).optional(),
+          USDTAmount: z.enum(["asc", "desc"]).optional(),
+          jUSDTAmount: z.enum(["asc", "desc"]).optional(),
+          jUSDCAmount: z.enum(["asc", "desc"]).optional(),
+          lastUtime: z.enum(["asc", "desc"]).optional(),
+        }),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -14,7 +25,7 @@ export const userRouter = createTRPCRouter({
       const txs = await ctx.db.userContract.findMany({
         take: 20,
         skip: (input.current - 1) * 20,
-        orderBy: { healthFactor: "asc" },
+        orderBy: input.orderBy,
       });
       return {
         count,

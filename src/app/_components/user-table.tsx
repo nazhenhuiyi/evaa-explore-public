@@ -5,6 +5,8 @@ import {
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
+    getSortedRowModel,
+    SortingState,
     useReactTable,
 } from "@tanstack/react-table"
 import { type UserContract } from "@prisma/client";
@@ -40,7 +42,7 @@ const columns: ColumnDef<UserContract>[] = [
         accessorKey: 'tonAmount',
         header: ({ column }) => {
             return (
-                <SortButton column={column}>ton Amount</SortButton>
+                `ton Amount`
             )
         },
         cell: ({ row }) => {
@@ -51,7 +53,7 @@ const columns: ColumnDef<UserContract>[] = [
         accessorKey: 'usdtAmount',
         header: ({ column }) => {
             return (
-                <SortButton column={column}>USDT Amount</SortButton>
+                `USDT Amount`
             )
         },
         cell: ({ row }) => {
@@ -62,7 +64,7 @@ const columns: ColumnDef<UserContract>[] = [
         accessorKey: 'stTonAmount',
         header: ({ column }) => {
             return (
-                <SortButton column={column}>stTON Amount</SortButton>
+                `stTON Amount`
             )
         },
         cell: ({ row }) => {
@@ -74,7 +76,7 @@ const columns: ColumnDef<UserContract>[] = [
 
         header: ({ column }) => {
             return (
-                <SortButton column={column}>tsTON Amount</SortButton>
+                `tsTON Amount`
             )
         },
         cell: ({ row }) => {
@@ -85,7 +87,7 @@ const columns: ColumnDef<UserContract>[] = [
         accessorKey: 'jUSDTAmount',
         header: ({ column }) => {
             return (
-                <SortButton column={column}>jUSDT Amount</SortButton>
+                `jUSDT Amount`
             )
         },
         cell: ({ row }) => {
@@ -96,7 +98,7 @@ const columns: ColumnDef<UserContract>[] = [
         accessorKey: 'jUSDCAmount',
         header: ({ column }) => {
             return (
-                <SortButton column={column}>jUSDC Amount</SortButton>
+                `jUSDC Amount`
             )
         },
         cell: ({ row }) => {
@@ -107,7 +109,7 @@ const columns: ColumnDef<UserContract>[] = [
         accessorKey: 'healthFactor',
         header: ({ column }) => {
             return (
-                <SortButton column={column}>healthFactor</SortButton>
+                <SortButton column={column}>health Factor</SortButton>
             )
         },
         cell: ({ row }) => {
@@ -116,9 +118,13 @@ const columns: ColumnDef<UserContract>[] = [
     },
     {
         accessorKey: 'totalDebt',
-        header: 'totalDebt',
+        header: ({ column }) => {
+            return (
+                <SortButton column={column}>total Debt</SortButton>
+            )
+        },
         cell: ({ row }) => {
-            return row.original.totalDebt
+            return row.original.totalDebt ? `${Number(row.original.totalDebt) / 100} USDT` : '--'
         }
     },
     {
@@ -139,8 +145,19 @@ export function UserTable({ liquidatorAddress, borrowerAddress }: { liquidatorAd
         pageIndex: 0, //initial page index
         pageSize: 20, //default page size
     });
+    const [sorting, setSorting] = useState<SortingState>([
+        {
+            desc: true,
+            id: 'heathFactor',
+        }
+    ])
+
+    const currentSort = sorting[0]!;
     const data = api.user.users.useQuery({
         current: pagination.pageIndex + 1,
+        orderBy: {
+            [currentSort.id]: currentSort.desc ? 'desc' : 'asc',
+        },
     });
 
     const table = useReactTable({
@@ -151,8 +168,11 @@ export function UserTable({ liquidatorAddress, borrowerAddress }: { liquidatorAd
         pageCount: data.data ? Math.ceil(data.data.count / pagination.pageSize) : 0,
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
+        onSortingChange: setSorting,
+        // getSortedRowModel: getSortedRowModel(),
         state: {
             pagination,
+            sorting,
         },
     })
 

@@ -11,20 +11,28 @@ datasource db {
 }
 
 model UserContract {
-    contractAddress String   @id
+    contractAddress String @id
     walletAddress   String
     userDataBOC     String
-    tonAmount       String?
-    tsTonAmount     String?
-    stTonAmount     String?
-    USDTAmount      String?
-    jUSDTAmount     String?
-    jUSDCAmount     String?
-    lastTxHash      String?
-    lastUtime       DateTime
-    codeVersion     Int?
-    healthFactor    Decimal
-    totalDebt       Decimal? @default(0)
+
+    tonAmount      String?
+    tonAmountNum   Decimal? @db.Decimal(80, 0)
+    tsTonAmount    String?
+    tsTonAmountNum Decimal? @db.Decimal(80, 0)
+    stTonAmount    String?
+    stTonAmountNum Decimal? @db.Decimal(80, 0)
+    USDTAmount     String?
+    USDTAmountNum  Decimal? @db.Decimal(80, 0)
+    jUSDTAmount    String?
+    jUSDTAmountNum Decimal? @db.Decimal(80, 0)
+    jUSDCAmount    String?
+    jUSDCAmountNum Decimal? @db.Decimal(80, 0)
+
+    lastTxHash   String?
+    lastUtime    DateTime
+    codeVersion  Int?
+    healthFactor Decimal
+    totalDebt    Decimal? @default(0)
 
     @@index([walletAddress, healthFactor])
 }
