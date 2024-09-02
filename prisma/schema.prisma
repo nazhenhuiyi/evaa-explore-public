@@ -10,11 +10,87 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model UserContract {
+    contractAddress String   @id
+    walletAddress   String
+    userDataBOC     String
+    tonAmount       String?
+    tsTonAmount     String?
+    stTonAmount     String?
+    USDTAmount      String?
+    jUSDTAmount     String?
+    jUSDCAmount     String?
+    lastTxHash      String?
+    lastUtime       DateTime
+    codeVersion     Int?
+    healthFactor    Decimal
+    totalDebt       Decimal? @default(0)
 
-    @@index([name])
+    @@index([walletAddress, healthFactor])
+}
+
+enum TxType {
+    SUPPLY
+    WITHDRAW
+}
+
+enum TransactionStatus {
+    SUCCESS
+    FAIL
+    PENDING
+}
+
+model Transactions {
+    txHash              String            @id
+    type                TxType
+    amount              String
+    assetsName          String
+    userContractAddress String?
+    userAddress         String
+    createAt            DateTime
+    status              TransactionStatus
+    lt                  BigInt
+
+    @@index([assetsName, userAddress, userContractAddress])
+}
+
+model LiquidateTransaction {
+    txHash               String            @id
+    lt                   BigInt
+    queryId              String
+    borrowerAddress      String
+    liquidatorAddress    String
+    minCollateralAmount  String
+    collateralAmount     String
+    collateralAssetName  String
+    liquidationAssetName String
+    liquidationAmount    String
+    createdAt            DateTime
+    errorCode            BigInt?
+    errorMsg             String?
+    status               TransactionStatus
+
+    @@index([borrowerAddress, liquidatorAddress, collateralAssetName, liquidationAssetName, queryId])
+}
+
+enum TaskStatus {
+    PENDING
+    SENT
+    SUCCESS
+    FAIL
+}
+
+model Task {
+    id                  Int        @id @default(autoincrement())
+    userWalletAddress   String
+    userContractAddress String
+    loanAsset           String
+    collateralAsset     String
+    liquidationAmount   String
+    minCollareralAmount String
+    pricesCell          String
+    queryID             String
+    createdAt           DateTime   @default(now())
+    status              TaskStatus
+    errorMsg            String?
 }

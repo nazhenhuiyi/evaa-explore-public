@@ -44,3 +44,7 @@ yarn-error.log*
 
 # idea files
 .idea
+status.log
+liquidate_tx_1.json
+info.log
+log
