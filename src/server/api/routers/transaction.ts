@@ -41,8 +41,8 @@ export const transactionRouter = createTRPCRouter({
         sort: z.enum(["asc", "desc"]).default("desc"),
         orderBy: z
           .object({
-            amount: z.enum(["asc", "desc"]),
-            createAt: z.enum(["asc", "desc"]),
+            amount: z.enum(["asc", "desc"]).optional(),
+            createAt: z.enum(["asc", "desc"]).optional(),
           })
           .optional(),
       }),

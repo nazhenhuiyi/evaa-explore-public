@@ -26,6 +26,7 @@ import { useState } from "react";
 import { Address } from "@ton/core";
 import { formatAssetsAmount } from "~/indexer/lib/format";
 import { Button } from "~/components/ui/button";
+import { SortButton } from './sort-button';
 
 const columns: ColumnDef<Transactions>[] = [
     {
@@ -46,16 +47,8 @@ const columns: ColumnDef<Transactions>[] = [
     {
         accessorKey: "createAt",
         header: ({ column }) => {
-            const sortingState = column.getIsSorted();
-            console.log(column.getIsSorted(), '(column.getIsSorted()')
             return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    created At
-                    {sortingState === "asc" ? <ArrowUpIcon className="ml-2 h-4 w-4" /> : <ArrowDownIcon className="ml-2 h-4 w-4" />}
-                </Button>
+                <SortButton column={column}> created At</SortButton>
             )
         },
         cell: ({ row }) => dayjs(row.original.createAt).format('YYYY-MM-DD HH:mm:ss'),
@@ -87,14 +80,21 @@ const columns: ColumnDef<Transactions>[] = [
 ]
 
 export function TxTable({ userAddress, showPagination = true }: { userAddress?: string; showPagination?: boolean }) {
-    const [sorting, setSorting] = useState<SortingState>([])
+    const [sorting, setSorting] = useState<SortingState>([{
+        desc: true,
+        id: 'createAt',
+    }])
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
         pageSize: 20, //default page size
     });
+    const currentSort = sorting[0]!;
     const data = api.transaction.getTransaction.useQuery({
         current: pagination.pageIndex + 1,
         userAddress: userAddress && Address.parse(userAddress).toRawString(),
+        orderBy: {
+            [currentSort.id]: currentSort.desc ? 'desc' : 'asc',
+        },
     });
 
     const table = useReactTable({
