@@ -86,7 +86,7 @@ const columns: ColumnDef<Transactions>[] = [
     },
 ]
 
-export function TxTable({ userAddress }: { userAddress?: string }) {
+export function TxTable({ userAddress, showPagination = true }: { userAddress?: string; showPagination?: boolean }) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
@@ -159,7 +159,7 @@ export function TxTable({ userAddress }: { userAddress?: string }) {
                     </TableBody>
                 </Table>
             </div>
-            <DataTablePagination table={table} />
+            {showPagination && <DataTablePagination table={table} />}
 
         </div>
 

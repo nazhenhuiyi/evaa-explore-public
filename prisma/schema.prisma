@@ -102,3 +102,14 @@ model Task {
     status              TaskStatus
     errorMsg            String?
 }
+
+model AssetsApy {
+    id          Int      @id @default(autoincrement())
+    assetId     String
+    assetName   String
+    supplyApy   BigInt
+    borrowApy   BigInt
+    createdAt   DateTime @default(now())
+    totalSupply Decimal? @db.Decimal(80, 0)
+    totalBorrow Decimal? @db.Decimal(80, 0)
+}

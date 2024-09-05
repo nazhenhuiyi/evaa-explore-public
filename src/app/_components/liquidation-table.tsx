@@ -86,7 +86,7 @@ const columns: ColumnDef<LiquidateTransaction>[] = [
     },
 ]
 
-export function LiquidationTxTable({ liquidatorAddress, borrowerAddress }: { liquidatorAddress?: string; borrowerAddress?: string }) {
+export function LiquidationTxTable({ liquidatorAddress, borrowerAddress, showPagination = true }: { liquidatorAddress?: string; borrowerAddress?: string; showPagination?: boolean }) {
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
         pageSize: 20, //default page size
@@ -156,7 +156,7 @@ export function LiquidationTxTable({ liquidatorAddress, borrowerAddress }: { liq
                     </TableBody>
                 </Table>
             </div>
-            <DataTablePagination table={table} />
+            {showPagination && <DataTablePagination table={table} />}
 
         </div>
 
