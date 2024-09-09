@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@evaafi/sdk':
-    specifier: ^0.5.1
-    version: 0.5.1(@ton/core@0.56.3)(@tonconnect/sdk@3.0.5)(crypto-js@4.2.0)
+    specifier: ^0.5.3
+    version: 0.5.3(@ton/core@0.56.3)(@tonconnect/sdk@3.0.5)(crypto-js@4.2.0)
   '@prisma/client':
     specifier: ^5.14.0
     version: 5.18.0(prisma@5.18.0)
@@ -1061,8 +1061,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@evaafi/sdk@0.5.1(@ton/core@0.56.3)(@tonconnect/sdk@3.0.5)(crypto-js@4.2.0):
-    resolution: {integrity: sha512-jzQMkECy9z7UakobqcYzxJ9gb8hRo2gnJeK5s6guTZQbpT2EDW8CFth+ama5IDth/C0dmwufvTqqqJduqSw7Aw==}
+  /@evaafi/sdk@0.5.3(@ton/core@0.56.3)(@tonconnect/sdk@3.0.5)(crypto-js@4.2.0):
+    resolution: {integrity: sha512-X+NxsWj89ts35MVws/usz0ofQxReckGcCOwnpumLB6ObXhPbaVSr06TBVzf/+6OG4lVWFSP5Wr8FwuDyMOIGHw==}
     peerDependencies:
       '@ton/core': '>=0.56.0'
       '@tonconnect/sdk': '>=3.0.0'

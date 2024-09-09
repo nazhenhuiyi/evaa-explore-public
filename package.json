@@ -15,7 +15,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@evaafi/sdk": "^0.5.1",
+    "@evaafi/sdk": "^0.5.3",
     "@prisma/client": "^5.14.0",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
